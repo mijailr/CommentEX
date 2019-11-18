@@ -1,4 +1,4 @@
-# CommentEX
+# CommentEX ![](https://github.com/mijailr/CommentEX/workflows/build/badge.svg)
 
 ## Introduction
 
