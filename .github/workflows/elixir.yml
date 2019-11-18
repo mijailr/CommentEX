@@ -27,9 +27,9 @@ jobs:
       env:
         MIX_ENV: "test"
       run: mix do test, coveralls.json, credo
-    - name: Coveralls GitHub Action
-      uses: coverallsapp/github-action@v1.0.1
+    - name: Code Coverage
+      uses: codecov/codecov-action@v1.0.3
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: cover/excoveralls.json
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: cover/excoveralls.json
 
