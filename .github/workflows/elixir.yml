@@ -26,7 +26,10 @@ jobs:
     - name: Run Tests
       env:
         MIX_ENV: "test"
-      run: mix do test, coveralls.json, credo
+      run: |
+        mix test
+        mix coveralls.json
+        mix credo
     - name: Code Coverage
       uses: codecov/codecov-action@v1.0.3
       with:
