@@ -1,4 +1,4 @@
-# CommentEX ![](https://github.com/mijailr/CommentEX/workflows/build/badge.svg)
+# CommentEX ![](https://github.com/mijailr/CommentEX/workflows/build/badge.svg?branch=master)
 
 ## Introduction
 
