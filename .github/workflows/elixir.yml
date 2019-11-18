@@ -1,8 +1,10 @@
 name: Elixir CI
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   test:
@@ -11,11 +13,18 @@ jobs:
       image: elixir:1.9.1-slim
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Get deps cache
+      uses: actions/cache@v1
       with:
         path: deps/
-        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-        restore-keys: ${{ runner.os }}-mix-
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-deps-
+    - name: Get build cache
+      uses: actions/cache@v1 
+      with:
+        path: _build/test/
+        key: ${{ runner.os }}-build-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-build-
     - name: Install Dependencies
       env:
         MIX_ENV: "test"
@@ -26,7 +35,10 @@ jobs:
     - name: Run Tests
       env:
         MIX_ENV: "test"
-      run: mix do test, coveralls.json, credo
+      run: |
+        mix test
+        mix coveralls.json
+        mix credo
     - name: Code Coverage
       uses: codecov/codecov-action@v1.0.3
       with:
