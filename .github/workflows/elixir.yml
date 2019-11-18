@@ -1,21 +1,33 @@
 name: Elixir CI
 
-on: push
+on:
+  - push
+  - pull_request
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     container:
       image: elixir:1.9.1-slim
-
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        path: deps/
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
     - name: Install Dependencies
+      env:
+        MIX_ENV: "test"
       run: |
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
     - name: Run Tests
-      run: mix test
+      run: mix do test, coveralls.json, credo
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v1.0.1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: cover/excoveralls.json
+

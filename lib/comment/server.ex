@@ -1,4 +1,7 @@
 defmodule Comment.Server do
+  @moduledoc """
+  This module handle the server HTTP requests
+  """
   require Logger
   use Plug.Router
 

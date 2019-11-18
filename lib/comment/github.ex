@@ -1,4 +1,8 @@
 defmodule Comment.Github do
+  @moduledoc """
+  This module handle the Github actions for installations
+  and pull requests.
+  """
   alias Comment.Crypto
 
   def handle_payload(payload, signature) do
