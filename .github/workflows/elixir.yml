@@ -24,6 +24,8 @@ jobs:
         mix local.hex --force
         mix deps.get
     - name: Run Tests
+      env:
+        MIX_ENV: "test"
       run: mix do test, coveralls.json, credo
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v1.0.1
