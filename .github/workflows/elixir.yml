@@ -11,9 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: elixir:1.9.1-slim
+    services:
+      db:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
-    - name: Setup postgresql
-      uses: Harmon758/postgresql-action@v1.0.0
     - name: Checkout repository
       uses: actions/checkout@v1
     - name: Get deps cache
@@ -30,14 +37,22 @@ jobs:
         restore-keys: ${{ runner.os }}-build-
     - name: Install Dependencies
       env:
-        MIX_ENV: "test"
+        MIX_ENV: test
       run: |
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
+    - name: Setup database
+      env:
+        MIX_ENV: test
+        DATABASE_HOSTNAME: db
+        DATABASE_USERNAME: postgres
+        DATABASE_PASSWORD: postgres
+      run: |
+        mix do ecto.create, ecto.migrate
     - name: Run Tests
       env:
-        MIX_ENV: "test"
+        MIX_ENV: test
       run: |
         mix test
         mix coveralls.json
