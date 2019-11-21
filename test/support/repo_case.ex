@@ -1,4 +1,7 @@
 defmodule Comment.RepoCase do
+  @moduledoc """
+  This module set the test cases for use Ecto
+  """
   use ExUnit.CaseTemplate
 
   using do
