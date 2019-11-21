@@ -9,9 +9,9 @@ defmodule Comment.Repository do
 
   schema "repositories" do
     field(:full_name, :string)
-    field(:name, :integer)
+    field(:name, :string)
     field(:private, :boolean, default: true)
-    field(:repository_id, :string)
+    field(:repository_id, :integer)
 
     belongs_to(:installation, Installation)
 
