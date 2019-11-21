@@ -6,13 +6,14 @@ defmodule Comment.Server do
   use Plug.Router
   use Plug.ErrorHandler
 
-  alias Comment.{Github}
+  alias Comment.{Github, BodyReader}
 
   plug(:match)
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
+    body_reader: {BodyReader, :read_body, []},
     json_decoder: Jason
   )
 
@@ -21,9 +22,11 @@ defmodule Comment.Server do
   plug(:dispatch)
 
   post "/webhook/github" do
-    # [signature] = get_req_header(conn, "x-hub-signature")
-    # payload = conn.assigns.raw_body
-    # response = Comment.Github.handle_payload(payload, signature)
+    conn
+    |> get_req_header("x-github-event")
+    |> List.first()
+    |> Github.handle_request(conn.params)
+
     send_resp(conn, 200, get_req_header(conn, "x-hub-signature"))
   end
 
