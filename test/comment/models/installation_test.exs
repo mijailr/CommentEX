@@ -1,7 +1,6 @@
 defmodule Comment.Models.InstallationTest do
   use Comment.RepoCase
   alias Comment.Installation
-  import Comment.Factory
 
   @invalid_attributes %{installation_id: "NaN", account_id: "not a number"}
   @valid_attributes %{
