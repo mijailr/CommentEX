@@ -1,8 +1,8 @@
 import Config
 
 config :comment,
-  github_secret_key: "dummysecretkey",
-  github_app_id: "000000",
+  github_secret_key: System.get_env("GITHUB_SECRET_KEY", "dummysecretkey"),
+  github_app_id: System.get_env("GITHUB_APP_ID", "00000"),
   port: 3000,
   ecto_repos: [Comment.Repo]
 
