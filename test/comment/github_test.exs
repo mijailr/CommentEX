@@ -11,19 +11,19 @@ defmodule Comment.GithubTest do
     ])
   end
 
-  test "calculate good signature" do
+  test "check good signature" do
     payload =
-      Github.handle_payload(
+      Github.verify_signature(
         "hello world!",
-        "sha1=d3e220f8e2233a1951ab9e30dba562f1e388f369"
+        "sha1=a4e4e63faa4741c471b5e4fc0284feb41c085ac7"
       )
 
     assert payload == {:ok, "hello world!"}
   end
 
-  test "calculate bad signature" do
+  test "check bad signature" do
     payload =
-      Github.handle_payload(
+      Github.verify_signature(
         "hello world!",
         "sha256=bee0f432b504b5f2bd795554e95606a17fee40b07f108463aeabc8d169b1a7f1"
       )
