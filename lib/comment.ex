@@ -5,14 +5,18 @@ defmodule Comment do
   childrens
   """
   use Application
+  alias Comment.{Server, Repo}
 
   def start(_type, _args) do
+    import Supervisor.Spec
+
     children = [
       Plug.Cowboy.child_spec(
         scheme: :http,
-        plug: Comment.Server,
-        options: [port: 3000]
-      )
+        plug: Server,
+        options: [port: Application.fetch_env!(:comment, :port)]
+      ),
+      supervisor(Repo, [])
     ]
 
     options = [

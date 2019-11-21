@@ -1,4 +1,10 @@
 name: build
+env:
+  MIX_ENV: test
+  POSTGRES_HOST: db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_DB: postgres
 
 on:
   push:
@@ -11,8 +17,14 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: elixir:1.9.1-slim
+    services:
+      db:
+        image: postgres:latest
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout repository
+      uses: actions/checkout@v1
     - name: Get deps cache
       uses: actions/cache@v1
       with:
@@ -27,14 +39,16 @@ jobs:
         restore-keys: ${{ runner.os }}-build-
     - name: Install Dependencies
       env:
-        MIX_ENV: "test"
+        MIX_ENV: test
       run: |
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
+        mix compile
+    - name: Setup database
+      run: |
+        mix do ecto.create, ecto.migrate
     - name: Run Tests
-      env:
-        MIX_ENV: "test"
       run: |
         mix test
         mix coveralls.json
