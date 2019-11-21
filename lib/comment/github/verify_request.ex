@@ -39,13 +39,13 @@ defmodule Comment.Github.VerifyRequest do
     {:ok, body, _} = read_body(conn)
 
     result_digest =
-      secret_key()
+      secret_key!()
       |> Crypto.calculate_signature(body)
 
     unless digest == result_digest, do: raise(HTTPNotAuthorized)
   end
 
-  defp secret_key do
+  defp secret_key! do
     Application.fetch_env!(:comment, :github_secret_key)
   end
 end
