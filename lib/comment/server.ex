@@ -4,38 +4,29 @@ defmodule Comment.Server do
   """
   require Logger
   use Plug.Router
-  use Plug.ErrorHandler
 
-  alias Comment.{Github}
+  alias Comment.RequestReader
 
   plug(:match)
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
+    body_reader: {RequestReader, :read_body, []},
     json_decoder: Jason
   )
 
-  plug(Github.VerifyRequest, paths: ["/webhook/github"])
-
   plug(:dispatch)
 
-  post "/webhook/github" do
-    # [signature] = get_req_header(conn, "x-hub-signature")
-    # payload = conn.assigns.raw_body
-    # response = Comment.Github.handle_payload(payload, signature)
-    send_resp(conn, 200, get_req_header(conn, "x-hub-signature"))
+  post "/" do
+    [signature] = get_req_header(conn, "x-hub-signature")
+    payload = conn.assigns.raw_body
+    {response, _payload} = Comment.Github.handle_payload(payload, signature)
+    Logger.info(response)
+    send_resp(conn, 200, "pong")
   end
 
-  post "/:platform/:user/:repo/" do
+  get "/:platform/:user/:repo/:branch" do
     send_resp(conn, 200, "hello #{user}")
-  end
-
-  match _ do
-    send_resp(conn, 404, "")
-  end
-
-  def handle_errors(conn, _) do
-    send_resp(conn, conn.status, "")
   end
 end
