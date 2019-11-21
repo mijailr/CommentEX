@@ -10,6 +10,7 @@ defmodule Comment.MixProject do
       description: description(),
       docs: docs(),
       elixir: "~> 1.9",
+      elixirc_paths: elixirc_paths(Mix.env()),
       name: "Comment",
       package: package(),
       preferred_cli_env: [
@@ -28,27 +29,39 @@ defmodule Comment.MixProject do
   def application do
     [
       mod: {Comment, []},
-      applications: [
-        :tentacat
-      ],
       extra_applications: [
         :crypto,
+        :ecto,
+        :logger,
         :plug_cowboy,
-        :logger
+        :tentacat
       ]
     ]
   end
 
+  defp elixirc_paths(:test) do
+    ["lib", "test/support"]
+  end
+
+  defp elixirc_paths(_) do
+    ["lib"]
+  end
+
   defp deps do
     [
-      {:tentacat, "~> 1.0"},
+      {:askimet_ex, "~> 0.1.1"},
+      {:ecto_sql, "~> 3.2"},
+      {:joken, "~> 2.2"},
       {:plug_cowboy, "~> 2.0"},
-      {:json, "~> 1.2"},
+      {:postgrex, "~> 0.15"},
+      {:tentacat, "~> 1.0"},
 
       # Test dependencies
       {:credo, "~> 1.1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.12", only: :test},
+      {:ex_machina, "~> 2.3", only: :test},
+      {:faker, "~> 0.13", only: :test},
 
       # Docs dependencies
       {:ex_doc, "~> 0.21", only: :dev}
