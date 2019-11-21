@@ -1,4 +1,4 @@
-import Mix.Config
+import Config
 
 config :comment,
   github_secret_key: "dummysecretkey",
