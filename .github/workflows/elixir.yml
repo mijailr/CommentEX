@@ -12,7 +12,10 @@ jobs:
     container:
       image: elixir:1.9.1-slim
     steps:
-    - uses: actions/checkout@v1
+    - name: Setup postgresql
+      uses: Harmon758/postgresql-action@v1.0.0
+    - name: Checkout repository
+      uses: actions/checkout@v1
     - name: Get deps cache
       uses: actions/cache@v1
       with:
