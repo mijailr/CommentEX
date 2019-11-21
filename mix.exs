@@ -52,7 +52,7 @@ defmodule Comment.MixProject do
       {:askimet_ex, "~> 0.1.1"},
       {:ecto_sql, "~> 3.2"},
       {:joken, "~> 2.2"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.1"},
       {:postgrex, "~> 0.15"},
       {:tentacat, "~> 1.0"},
 
