@@ -1,4 +1,10 @@
 name: build
+env:
+  MIX_ENV: test
+  POSTGRES_HOST: db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_DB: postgres
 
 on:
   push:
@@ -14,10 +20,6 @@ jobs:
     services:
       db:
         image: postgres:latest
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
@@ -42,17 +44,11 @@ jobs:
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
+        mix compile
     - name: Setup database
-      env:
-        MIX_ENV: test
-        DATABASE_HOSTNAME: db
-        DATABASE_USERNAME: postgres
-        DATABASE_PASSWORD: postgres
       run: |
         mix do ecto.create, ecto.migrate
     - name: Run Tests
-      env:
-        MIX_ENV: test
       run: |
         mix test
         mix coveralls.json

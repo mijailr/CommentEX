@@ -2,7 +2,7 @@ import Config
 
 config :comment, Comment.Repo,
   database: "comment_test",
-  hostname: System.get_env("DATABASE_HOSTNAME", "localhost"),
-  username: System.get_env("DATABASE_USERNAME", "postgres"),
-  password: System.get_env("DATABASE_PASSWORD", ""),
+  hostname: System.get_env("POSTGRES_HOST", "localhost"),
+  username: System.get_env("POSTGRES_USER", "postgres"),
+  password: System.get_env("POSTGRES_PASSWORD", ""),
   pool: Ecto.Adapters.SQL.Sandbox
