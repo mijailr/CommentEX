@@ -21,7 +21,7 @@ defmodule Comment.Server do
   post "/" do
     [signature] = get_req_header(conn, "x-hub-signature")
     payload = conn.assigns.raw_body
-    {response, _payload} = Comment.Github.handle_payload(payload, signature)
+    response = Comment.Github.handle_payload(payload, signature)
     Logger.info(response)
     send_resp(conn, 200, "pong")
   end
