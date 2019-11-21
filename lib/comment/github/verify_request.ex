@@ -2,7 +2,7 @@ defmodule Comment.Github.VerifyRequest do
   @moduledoc """
   This module handle the Plug for Github requests
   """
-  import Plug.Conn, only: [get_req_header: 2, read_body: 1]
+  import Plug.Conn, only: [get_req_header: 2]
 
   alias Comment.Crypto
   alias Comment.{HTTPBadRequest, HTTPNotAuthorized}
@@ -36,7 +36,7 @@ defmodule Comment.Github.VerifyRequest do
           raise(HTTPBadRequest)
       end
 
-    {:ok, body, _} = read_body(conn)
+    %Plug.Conn{assigns: %{raw_body: body}} = conn
 
     result_digest =
       secret_key!()
