@@ -1,4 +1,7 @@
 defmodule Comment.Repository do
+  @moduledoc """
+  This handle the repositories information to be used
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

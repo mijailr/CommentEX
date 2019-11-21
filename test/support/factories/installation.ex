@@ -1,12 +1,18 @@
 defmodule Comment.Factory.Installation do
-  use ExMachina.Ecto, repo: Comment.Repo
-
-  def installation_factory do
-    %Comment.Installation{
-      account_login: Faker.Internet.user_name(),
-      account_type: "User",
-      account_id: Faker.random_between(0, 99999),
-      installation_id: Faker.random_between(0, 99999)
-    }
+  @moduledoc """
+  Define a installation factory to be used inside the
+  Comment.Factory module
+  """
+  defmacro __using__(_) do
+    quote do
+      def installation_factory do
+        %Comment.Installation{
+          account_login: Faker.Internet.user_name(),
+          account_type: "User",
+          account_id: Faker.random_between(0, 99_999),
+          installation_id: Faker.random_between(0, 99_999)
+        }
+      end
+    end
   end
 end
