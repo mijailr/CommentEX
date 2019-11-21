@@ -1,4 +1,7 @@
 defmodule Comment.Github.Tokens do
+  @moduledoc """
+  Configure the JWT tokens for github
+  """
   use Joken.Config, default_signer: :github
 
   @impl true

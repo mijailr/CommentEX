@@ -1,4 +1,8 @@
 defmodule Comment.Installation do
+  @moduledoc """
+  The schema of a app installation, store the information necesary for
+  use the app.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
