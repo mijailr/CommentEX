@@ -1,11 +1,11 @@
-defmodule Comment.BadRequest do
+defmodule Comment.HTTPBadRequest do
   @moduledoc """
   Define NotAuthorized exception
   """
   defexception message: "BadRequest", plug_status: 400
 end
 
-defmodule Comment.NotAuthorized do
+defmodule Comment.HTTPNotAuthorized do
   @moduledoc """
   Define NotAuthorized exception
   """

@@ -1,8 +1,11 @@
 defmodule Comment.Github.VerifyRequest do
+  @moduledoc """
+  This module handle the Plug for Github requests
+  """
   import Plug.Conn, only: [get_req_header: 2, read_body: 1]
 
   alias Comment.Crypto
-  alias Comment.{BadRequest, NotAuthorized}
+  alias Comment.{HTTPBadRequest, HTTPNotAuthorized}
 
   def init(options), do: options
 
@@ -18,7 +21,7 @@ defmodule Comment.Github.VerifyRequest do
         verify_signature!(conn, signature)
 
       _ ->
-        raise(BadRequest)
+        raise(HTTPBadRequest)
     end
   end
 
@@ -30,7 +33,7 @@ defmodule Comment.Github.VerifyRequest do
           digest
 
         _ ->
-          raise(BadRequest)
+          raise(HTTPBadRequest)
       end
 
     {:ok, body, _} = read_body(conn)
@@ -39,7 +42,7 @@ defmodule Comment.Github.VerifyRequest do
       secret_key()
       |> Crypto.calculate_signature(body)
 
-    unless digest == result_digest, do: raise(NotAuthorized)
+    unless digest == result_digest, do: raise(HTTPNotAuthorized)
   end
 
   defp secret_key do
