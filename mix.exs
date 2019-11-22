@@ -16,6 +16,7 @@ defmodule Comment.MixProject do
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
+        "coveralls.github": :test,
         "coveralls.html": :test,
         docs: :dev,
         vcr: :test,
@@ -64,10 +65,12 @@ defmodule Comment.MixProject do
       {:credo, "~> 1.1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
       {:ex_machina, "~> 2.3", only: :test},
-      {:excoveralls, "~> 0.12",
-       only: :test,
-       git: "https://github.com/mijailr/excoveralls",
-       branch: "feature/github-actions"},
+      # {:excoveralls, "~> 0.12"},
+      {
+        :excoveralls,
+        "~> 0.12",
+        git: "https://github.com/mijailr/excoveralls", branch: "feature/github-actions"
+      },
       {:faker, "~> 0.13", only: :test},
 
       # Docs dependencies
