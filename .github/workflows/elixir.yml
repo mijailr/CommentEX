@@ -23,6 +23,9 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+    - name: Install git
+      run: |
+        apt-get install -y git
     - name: Checkout repository
       uses: actions/checkout@v1
     - name: Get deps cache
@@ -41,7 +44,6 @@ jobs:
       env:
         MIX_ENV: test
       run: |
-        apt-get install -qq git
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
