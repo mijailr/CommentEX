@@ -49,13 +49,9 @@ jobs:
       run: |
         mix do ecto.create, ecto.migrate
     - name: Run Tests
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: |
-        mix test
-        mix coveralls.json
         mix credo
-    - name: Code Coverage
-      uses: codecov/codecov-action@v1.0.3
-      with:
-        token: ${{secrets.CODECOV_TOKEN}}
-        file: cover/excoveralls.json
-
+        mix test
+        mix coveralls.post
