@@ -11,7 +11,5 @@ defmodule Comment.Repo.Migrations.CreateRepositories do
 
       timestamps()
     end
-
-    create(unique_index(:repositories, [:installation_id]))
   end
 end
