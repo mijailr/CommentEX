@@ -5,7 +5,7 @@ defmodule Comment.Repository do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Comment.{Installation, Repository}
+  alias Comment.{Installation, Repository, Repo}
 
   schema "repositories" do
     field(:full_name, :string)
@@ -18,9 +18,15 @@ defmodule Comment.Repository do
     timestamps()
   end
 
+  def create(params) do
+    changeset(params)
+    |> Repo.insert()
+  end
+
   def changeset(params) do
     %Repository{}
-    |> cast(params, [:full_name, :name, :private, :repository_id])
+    |> cast(params, [:full_name, :name, :private, :repository_id, :installation_id])
+    |> assoc_constraint(:installation)
     |> validate_required([:full_name, :name, :repository_id, :installation_id])
   end
 end
