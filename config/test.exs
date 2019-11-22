@@ -1,5 +1,9 @@
 import Config
 
+config :comment,
+  github_secret_key: "dummysecretkey",
+  github_app_id: "00000"
+
 config :comment, Comment.Repo,
   database: "comment_test",
   hostname: System.get_env("POSTGRES_HOST", "localhost"),
