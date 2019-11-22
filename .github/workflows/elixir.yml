@@ -41,6 +41,7 @@ jobs:
       env:
         MIX_ENV: test
       run: |
+        sudo apt-get install -qq git
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
