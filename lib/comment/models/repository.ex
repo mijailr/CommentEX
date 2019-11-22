@@ -4,6 +4,7 @@ defmodule Comment.Repository do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   alias Comment.{Installation, Repository, Repo}
 
@@ -21,6 +22,11 @@ defmodule Comment.Repository do
   def create(params) do
     changeset(params)
     |> Repo.insert()
+  end
+
+  def count do
+    from(r in "repositories", select: count(r.id))
+    |> Repo.one()
   end
 
   def changeset(params) do

@@ -2,7 +2,7 @@ defmodule Comment.Repo.Migrations.CreateInstallations do
   use Ecto.Migration
 
   def change do
-    create table("installations") do
+    create table(:installations) do
       add(:installation_id, :integer, null: false)
       add(:account_id, :integer, null: false)
       add(:account_login, :string, null: false)
