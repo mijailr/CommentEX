@@ -5,6 +5,7 @@ defmodule Comment.Installation do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   alias Comment.{Installation, Repo, Repository}
 
@@ -24,6 +25,17 @@ defmodule Comment.Installation do
     %Installation{}
     |> changeset(params, repositories)
     |> Repo.insert()
+  end
+
+  def destroy!(installation_id) do
+    Installation
+    |> Repo.get_by!(installation_id: installation_id)
+    |> Repo.delete!()
+  end
+
+  def count do
+    from(r in "installations", select: count(r.id))
+    |> Repo.one()
   end
 
   def changeset(%Installation{} = schema, params, repositories) do

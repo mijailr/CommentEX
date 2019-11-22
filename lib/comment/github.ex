@@ -6,40 +6,46 @@ defmodule Comment.Github do
 
   alias Comment.{Installation, Repository}
 
-  def handle_request("installation" = event, %{
-        "action" => action,
-        "installation" => installation,
-        "repositories" => repositories
-      }) do
+  def handle_request(
+        "installation" = event,
+        %{
+          "action" => action
+        } = data
+      ) do
     event
-    |> handle_action(action, installation, repositories)
+    |> handle_action(action, data)
   end
 
-  def handle_request(_event, params) do
-    IO.puts(params)
+  def handle_request(_event, data) do
+    IO.inspect(data)
   end
 
-  defp handle_action("installation", "created", details, repos) do
+  defp handle_action("installation", "created", data) do
     params = %{
-      installation_id: details["id"],
-      account_login: details["account"]["login"],
-      account_id: details["target_id"],
-      account_type: details["target_type"]
+      installation_id: data["installation"]["id"],
+      account_login: data["installation"]["account"]["login"],
+      account_id: data["installation"]["target_id"],
+      account_type: data["installation"]["target_type"]
     }
 
     repositories =
-      repos
+      data["repositories"]
       |> Enum.map(&convert_repositories/1)
 
     Installation.create(params, repositories)
   end
 
+  defp handle_action("installation", "deleted", %{"installation" => %{"id" => id}}) do
+    id
+    |> Installation.destroy!()
+  end
+
   defp convert_repositories(repo) do
-    Repository.changeset(%{
+    %{
       full_name: repo["full_name"],
       name: repo["name"],
       private: repo["private"],
       repository_id: repo["id"]
-    })
+    }
   end
 end
