@@ -6,9 +6,9 @@ defmodule Comment.CryptoTest do
 
   doctest Crypto
 
-  @key "cbbdd7ee6675f43529a399cfb5f4e3249b8e9285"
-  @payload "String to be signed"
-  @signature "129e8ca6a6b279b1065f86b8e9cec6ae7f555372"
+  @key "dummysecret"
+  @payload File.read!("test/fixtures/webhook/github.installation.create.json")
+  @signature "e5a76829031075771f2a99b8e87402302508d148"
 
   test "calculate_signature/2" do
     assert calculate_signature(@key, @payload) == @signature

@@ -17,7 +17,11 @@ defmodule Comment.MixProject do
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.html": :test,
-        docs: :dev
+        docs: :dev,
+        vcr: :test,
+        "vcr.delete": :test,
+        "vcr.check": :test,
+        "vcr.show": :test
       ],
       releases: releases(),
       start_permanent: Mix.env() == :prod,
@@ -59,8 +63,8 @@ defmodule Comment.MixProject do
       # Test dependencies
       {:credo, "~> 1.1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
-      {:excoveralls, "~> 0.12", only: :test},
       {:ex_machina, "~> 2.3", only: :test},
+      {:excoveralls, "~> 0.12", only: :test},
       {:faker, "~> 0.13", only: :test},
 
       # Docs dependencies

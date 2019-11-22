@@ -15,8 +15,8 @@ defmodule Comment.Github do
     |> handle_action(action, installation, repositories)
   end
 
-  def handle_request(event, _params) do
-    IO.puts(event)
+  def handle_request(_event, params) do
+    IO.puts(params)
   end
 
   defp handle_action("installation", "created", details, repos) do
