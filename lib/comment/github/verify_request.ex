@@ -42,7 +42,7 @@ defmodule Comment.Github.VerifyRequest do
       secret_key!()
       |> Crypto.calculate_signature(body)
 
-    unless digest == result_digest, do: raise("Digest: #{result_digest}")
+    unless digest == result_digest, do: raise(HTTPNotAuthorized)
   end
 
   defp secret_key! do
