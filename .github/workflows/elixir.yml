@@ -54,4 +54,4 @@ jobs:
       run: |
         mix credo
         mix test
-        mix coveralls.post -s $GITHUB_SHA -n $GITHUB_EVENT_NAME -b $GITHUB_REF -c $GITHUB_ACTOR
+        mix coveralls.github
