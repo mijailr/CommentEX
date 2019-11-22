@@ -4,7 +4,7 @@ defmodule Comment.Github do
   and pull requests.
   """
 
-  alias Comment.{Installation, Repository}
+  alias Comment.{Installation}
 
   def handle_request(
         "installation" = event,
@@ -16,9 +16,7 @@ defmodule Comment.Github do
     |> handle_action(action, data)
   end
 
-  def handle_request(_event, data) do
-    IO.inspect(data)
-  end
+  def handle_request(_event, _data)
 
   defp handle_action("installation", "created", data) do
     params = %{
