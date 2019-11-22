@@ -4,7 +4,7 @@ defmodule Comment.Github do
   and pull requests.
   """
 
-  alias Comment.{Installation, Repo, Repository}
+  alias Comment.{Installation, Repository}
 
   def handle_request("installation" = event, %{
         "action" => action,
@@ -31,18 +31,15 @@ defmodule Comment.Github do
       repos
       |> Enum.map(&convert_repositories/1)
 
-    %Installation{}
-    |> Installation.changeset(params)
-    |> Ecto.Changeset.put_assoc(:repositories, repositories)
-    |> Repo.insert!()
+    Installation.create(params, repositories)
   end
 
   defp convert_repositories(repo) do
-    %Repository{
+    Repository.changeset(%{
       full_name: repo["full_name"],
       name: repo["name"],
       private: repo["private"],
       repository_id: repo["id"]
-    }
+    })
   end
 end

@@ -3,10 +3,10 @@ defmodule Comment.Repo.Migrations.CreateInstallations do
 
   def change do
     create table("installations") do
-      add(:installation_id, :integer)
-      add(:account_id, :integer)
-      add(:account_login, :string)
-      add(:account_type, :string)
+      add(:installation_id, :integer, null: false)
+      add(:account_id, :integer, null: false)
+      add(:account_login, :string, null: false)
+      add(:account_type, :string, null: false)
       add(:active, :boolean, default: true)
 
       timestamps()
