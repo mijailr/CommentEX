@@ -10,7 +10,7 @@ defmodule Comment.Installation do
   alias Comment.{Installation, Repo, Repository}
 
   schema "installations" do
-    field(:installation_id, :integer)
+    field(:installation, :integer)
     field(:account_login, :string)
     field(:account_id, :integer)
     field(:account_type, :string)
@@ -27,10 +27,28 @@ defmodule Comment.Installation do
     |> Repo.insert()
   end
 
-  def destroy!(installation_id) do
-    Installation
-    |> Repo.get_by!(installation_id: installation_id)
+  def destroy!(id) do
+    get!(id)
     |> Repo.delete!()
+  end
+
+  def get!(id) do
+    Installation
+    |> Repo.get_by!(installation: id)
+  end
+
+  def add_repositories!(installation, [repository | tail]) do
+    installation
+    |> Ecto.build_assoc(:repositories)
+    |> change(repository)
+    |> Repository.changeset()
+    |> Repo.insert!()
+
+    add_repositories!(installation, tail)
+  end
+
+  def add_repositories!(installation, []) do
+    installation
   end
 
   def count do
@@ -40,10 +58,10 @@ defmodule Comment.Installation do
 
   def changeset(%Installation{} = schema, params, repositories) do
     schema
-    |> cast(params, [:account_id, :account_login, :account_type, :installation_id])
+    |> cast(params, [:account_id, :account_login, :account_type, :installation])
     |> put_assoc(:repositories, repositories)
     |> cast_assoc(:repositories, with: &Repository.changeset/1)
-    |> validate_required([:account_id, :account_login, :account_type, :installation_id])
-    |> unique_constraint(:installation_id)
+    |> validate_required([:account_id, :account_login, :account_type, :installation])
+    |> unique_constraint(:installation)
   end
 end
