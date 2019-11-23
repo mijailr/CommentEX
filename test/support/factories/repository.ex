@@ -13,7 +13,7 @@ defmodule Comment.Factory.Repository do
           name: name,
           full_name: full_name,
           private: false,
-          repository_id: 99_999,
+          repository: Faker.random_between(0, 99_999),
           installation_id: nil
         }
       end

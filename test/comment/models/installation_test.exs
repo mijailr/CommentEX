@@ -12,7 +12,7 @@ defmodule Comment.Models.InstallationTest do
 
   test "an invalid installation" do
     assert {:error, %Ecto.Changeset{}} =
-             params_for(:installation, installation_id: nil)
+             params_for(:installation, installation: nil)
              |> Installation.create([])
   end
 
@@ -22,7 +22,7 @@ defmodule Comment.Models.InstallationTest do
     count = Installation.count()
     repo_count = Repository.count()
 
-    Installation.destroy!(installation.installation_id)
+    Installation.destroy!(installation.installation)
     assert Installation.count() == count - 1
     assert Repository.count() == repo_count - 5
   end

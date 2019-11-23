@@ -10,7 +10,7 @@ defmodule Comment.Factory.Installation do
           account_login: Faker.Internet.user_name(),
           account_type: "User",
           account_id: Faker.random_between(0, 99_999),
-          installation_id: Faker.random_between(0, 99_999)
+          installation: Faker.random_between(0, 99_999)
         }
       end
     end
