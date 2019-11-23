@@ -7,19 +7,72 @@ defmodule Comment.ServerTest do
 
   @opts Server.init([])
 
-  test "Github webhook installation create" do
-    body = File.read!("test/fixtures/webhook/github.installation.create.json")
-    params = Jason.decode!(body)
-
+  test "not found" do
     conn =
-      conn(:post, "/webhook/github", params)
-      |> put_req_header("x-hub-signature", "sha1=0b586799339e68bacb2f3bfd51e1b341ef04aa36")
-      |> put_req_header("x-github-event", "installation")
-      |> Plug.Conn.assign(:raw_body, body)
+      conn(:post, "/random")
+      |> Server.call(@opts)
 
-    conn = Server.call(conn, @opts)
+    assert conn.state == :sent
+    assert conn.status == 404
+  end
+
+  test "bad request" do
+    conn =
+      conn(:post, "/webhook/github", "")
+      |> put_req_header("content-type", "application/json")
+
+    assert_raise Comment.HTTPBadRequest, fn ->
+      Server.call(conn, @opts)
+    end
+
+    assert {400, _, _} = sent_resp(conn)
+  end
+
+  test "bad request signature" do
+    conn =
+      conn(:post, "/webhook/github", "")
+      |> put_req_header("content-type", "application/json")
+      |> put_req_header("x-hub-signature", "sha1")
+
+    assert_raise Comment.HTTPBadRequest, fn ->
+      Server.call(conn, @opts)
+    end
+
+    assert {400, _, _} = sent_resp(conn)
+  end
+
+  test "not authorized" do
+    conn =
+      conn(:post, "/webhook/github", "")
+      |> put_req_header("content-type", "application/json")
+      |> put_req_header("x-hub-signature", "sha1=#")
+
+    assert_raise Comment.HTTPNotAuthorized, fn ->
+      Server.call(conn, @opts)
+    end
+
+    assert {401, _, _} = sent_resp(conn)
+  end
+
+  test "Github webhook installation create" do
+    conn = github_request("installation", "create")
 
     assert conn.state == :sent
     assert conn.status == 200
+  end
+
+  defp connection(event, body, signature) do
+    conn(:post, "/webhook/github", body)
+    |> put_req_header("content-type", "application/json")
+    |> put_req_header("x-hub-signature", "sha1=#{signature}")
+    |> put_req_header("x-github-event", event)
+    |> Server.call(@opts)
+  end
+
+  defp github_request(event, action) do
+    fixture = "test/fixtures/webhook/github.#{event}.#{action}.json"
+    body = File.read!(fixture)
+    signature = File.read!("#{fixture}.sig") |> String.replace("\n", "")
+    connection(event, body, signature)
   end
 end

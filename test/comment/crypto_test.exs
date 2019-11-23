@@ -6,11 +6,15 @@ defmodule Comment.CryptoTest do
 
   doctest Crypto
 
-  @key "dummysecret"
-  @payload File.read!("test/fixtures/webhook/github.installation.create.json")
-  @signature "e5a76829031075771f2a99b8e87402302508d148"
+  @key Application.fetch_env!(:comment, :github_secret_key)
+  @files Path.wildcard("test/fixtures/webhook/*.json")
 
-  test "calculate_signature/2" do
-    assert calculate_signature(@key, @payload) == @signature
+  for file <- @files do
+    @payload File.read!(file)
+    @signature File.read!("#{file}.sig") |> String.replace("\n", "")
+
+    test "calculate_signature of #{file}" do
+      assert calculate_signature(@key, @payload) == @signature
+    end
   end
 end
