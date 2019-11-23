@@ -1,4 +1,7 @@
 defmodule Comment.Github.HandleRepositories do
+  @moduledoc """
+  This module uses GenServer for handle github repositories requests
+  """
   use GenServer
   alias Comment.{Installation, Repository}
 

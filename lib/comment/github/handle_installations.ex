@@ -1,4 +1,7 @@
 defmodule Comment.Github.HandleInstallations do
+  @moduledoc """
+  This module uses GenServer for handle github installations requests
+  """
   use GenServer
   alias Comment.{Installation, Repository}
 
@@ -23,8 +26,6 @@ defmodule Comment.Github.HandleInstallations do
     repositories =
       data["repositories"]
       |> Enum.map(&Repository.process/1)
-
-    IO.inspect(repositories)
 
     Installation.create(params, repositories)
     |> case do
