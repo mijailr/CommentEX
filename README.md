@@ -1,4 +1,4 @@
-# CommentEX ![](https://github.com/mijailr/CommentEX/workflows/build/badge.svg)
+# CommentEX ![](https://github.com/mijailr/CommentEX/workflows/build/badge.svg) [![codecov](https://codecov.io/gh/mijailr/CommentEX/branch/master/graph/badge.svg)](https://codecov.io/gh/mijailr/CommentEX) 
 
 ## Introduction
 
@@ -9,3 +9,5 @@ It consist on a hight performace web service to handle the POST request from you
 You can deploy CommentEX on your infraestructure or use the public instance for free.
 
 ## This is a work in progress, at the time there is not a production version available
+
+## Documentation TODO
