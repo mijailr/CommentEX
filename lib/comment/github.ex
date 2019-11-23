@@ -4,46 +4,15 @@ defmodule Comment.Github do
   and pull requests.
   """
 
-  alias Comment.{Installation}
+  alias Comment.Github.{HandleInstallations, HandleRepositories}
 
-  def handle_request(
-        "installation" = event,
-        %{
-          "action" => action
-        } = data
-      ) do
-    event
-    |> handle_action(action, data)
+  def handle_request(:installation, %{"action" => action} = data) do
+    HandleInstallations.execute(action, data)
   end
 
-  def handle_request(_event, _data)
-
-  defp handle_action("installation", "created", data) do
-    params = %{
-      installation_id: data["installation"]["id"],
-      account_login: data["installation"]["account"]["login"],
-      account_id: data["installation"]["target_id"],
-      account_type: data["installation"]["target_type"]
-    }
-
-    repositories =
-      data["repositories"]
-      |> Enum.map(&convert_repositories/1)
-
-    Installation.create(params, repositories)
+  def handle_request(:installation_repositories, %{"action" => action} = data) do
+    HandleRepositories.execute(action, data)
   end
 
-  defp handle_action("installation", "deleted", %{"installation" => %{"id" => id}}) do
-    id
-    |> Installation.destroy!()
-  end
-
-  defp convert_repositories(repo) do
-    %{
-      full_name: repo["full_name"],
-      name: repo["name"],
-      private: repo["private"],
-      repository_id: repo["id"]
-    }
-  end
+  def handle_request(_event, _data), do: "not_implemented"
 end

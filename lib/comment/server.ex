@@ -25,6 +25,7 @@ defmodule Comment.Server do
     conn
     |> get_req_header("x-github-event")
     |> List.first()
+    |> String.to_atom()
     |> Github.handle_request(conn.params)
 
     send_resp(conn, 200, get_req_header(conn, "x-hub-signature"))
