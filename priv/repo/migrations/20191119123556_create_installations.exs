@@ -3,7 +3,7 @@ defmodule Comment.Repo.Migrations.CreateInstallations do
 
   def change do
     create table(:installations) do
-      add(:installation_id, :integer, null: false)
+      add(:installation, :integer, null: false)
       add(:account_id, :integer, null: false)
       add(:account_login, :string, null: false)
       add(:account_type, :string, null: false)
@@ -12,6 +12,6 @@ defmodule Comment.Repo.Migrations.CreateInstallations do
       timestamps()
     end
 
-    create(unique_index(:installations, [:installation_id]))
+    create(unique_index(:installations, [:installation]))
   end
 end
