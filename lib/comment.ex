@@ -5,7 +5,7 @@ defmodule Comment do
   childrens
   """
   use Application
-  alias Comment.{Server, Repo}
+  alias Comment.{Server, Repo, Github}
 
   def start(_type, _args) do
     import Supervisor.Spec
@@ -16,7 +16,9 @@ defmodule Comment do
         plug: Server,
         options: [port: Application.fetch_env!(:comment, :port)]
       ),
-      supervisor(Repo, [])
+      supervisor(Repo, []),
+      supervisor(Github.HandleInstallations, []),
+      supervisor(Github.HandleRepositories, [])
     ]
 
     options = [
