@@ -67,3 +67,9 @@ jobs:
       run: |
         mix credo
         mix test
+        mix coveralls.json
+    - name: Run CodeCov
+      uses: codecov/codecov-action@v1.0.4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: cover/excoveralls.json
