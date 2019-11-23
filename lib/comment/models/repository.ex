@@ -12,7 +12,7 @@ defmodule Comment.Repository do
     field(:full_name, :string)
     field(:name, :string)
     field(:private, :boolean, default: true)
-    field(:repository_id, :integer)
+    field(:repository, :integer)
 
     belongs_to(:installation, Installation)
 
@@ -29,10 +29,44 @@ defmodule Comment.Repository do
     |> Repo.one()
   end
 
+  def get(id) do
+    Repository
+    |> Repo.get_by(repository: id)
+    |> case do
+      {:ok, repository} ->
+        repository
+
+      _ ->
+        nil
+    end
+  end
+
+  def destroy!(id) do
+    get(id)
+    |> case do
+      %Repository{} = repo ->
+        repo
+        |> Repo.delete!()
+
+      _ ->
+        nil
+    end
+  end
+
+  def process(repository) do
+    %{
+      full_name: repository["full_name"],
+      name: repository["name"],
+      private: repository["private"],
+      repository: repository["id"]
+    }
+  end
+
   def changeset(params) do
     %Repository{}
-    |> cast(params, [:full_name, :name, :private, :repository_id, :installation_id])
+    |> cast(params, [:full_name, :name, :private, :repository, :installation_id])
     |> assoc_constraint(:installation)
-    |> validate_required([:full_name, :name, :repository_id, :installation_id])
+    |> validate_required([:full_name, :name, :repository, :installation_id])
+    |> unique_constraint(:repository, name: :repositories_repository_index)
   end
 end
