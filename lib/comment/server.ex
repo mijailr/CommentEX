@@ -6,7 +6,8 @@ defmodule Comment.Server do
   use Plug.Router
   use Plug.ErrorHandler
 
-  alias Comment.{Github, BodyReader}
+  alias Comment.{BodyReader, Github}
+  alias Github.VerifyRequest
 
   plug(:match)
 
@@ -17,7 +18,7 @@ defmodule Comment.Server do
     json_decoder: Jason
   )
 
-  plug(Github.VerifyRequest, paths: ["/webhook/github"])
+  plug(VerifyRequest, paths: ["/webhook/github"])
 
   plug(:dispatch)
 

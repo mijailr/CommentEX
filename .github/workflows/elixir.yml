@@ -48,23 +48,21 @@ jobs:
     - name: Install Dependencies
       env:
         MIX_ENV: test
+
       run: |
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
         mix compile
+
+    - name: Run linter
+      run: mix credo --format flycheck --strict
+
     - name: Setup database
+      run: mix do ecto.create, ecto.migrate
 
-      run: |
-        mix do ecto.create, ecto.migrate
     - name: Run Tests
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: mix coveralls.github
 
-      run: |
-        mix credo
-        mix test
-        mix coveralls.json
-    - name: Run CodeCov
-      uses: codecov/codecov-action@v1.0.4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: cover/excoveralls.json
