@@ -62,5 +62,7 @@ jobs:
       run: mix do ecto.create, ecto.migrate
 
     - name: Run Tests
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: mix coveralls.github
 
