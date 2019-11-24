@@ -5,7 +5,7 @@ defmodule Comment do
   childrens
   """
   use Application
-  alias Comment.{Server, Repo, Github}
+  alias Comment.{Github, Repo, Server}
 
   def start(_type, _args) do
     import Supervisor.Spec

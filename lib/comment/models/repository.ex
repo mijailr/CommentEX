@@ -6,7 +6,7 @@ defmodule Comment.Repository do
   import Ecto.Changeset
   import Ecto.Query
 
-  alias Comment.{Installation, Repository, Repo}
+  alias Comment.{Installation, Repo, Repository}
 
   schema "repositories" do
     field(:full_name, :string)
