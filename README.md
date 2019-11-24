@@ -1,4 +1,4 @@
-# CommentEX ![](https://github.com/mijailr/CommentEX/workflows/build/badge.svg) [![codecov](https://codecov.io/gh/mijailr/CommentEX/branch/master/graph/badge.svg)](https://codecov.io/gh/mijailr/CommentEX) 
+# CommentEX ![](https://github.com/mijailr/CommentEX/workflows/build/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/mijailr/CommentEX/badge.svg?branch=master)](https://coveralls.io/github/mijailr/CommentEX?branch=master)
 
 ## Introduction
 
