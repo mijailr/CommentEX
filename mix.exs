@@ -63,9 +63,8 @@ defmodule Comment.MixProject do
 
       # Test dependencies
       {:credo, "~> 1.1.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
       {:ex_machina, "~> 2.3", only: :test},
-      {:excoveralls, "~> 0.12"},
+      {:excoveralls, "~> 0.12", only: [:dev, :test], git: "https://github.com/mijailr/excoveralls", branch: "feature/github-actions"},
       {:faker, "~> 0.13", only: :test},
       {:exvcr, "~> 0.11", only: :test},
 
