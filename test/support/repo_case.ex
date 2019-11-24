@@ -3,6 +3,8 @@ defmodule Comment.RepoCase do
   This module set the test cases for use Ecto
   """
   use ExUnit.CaseTemplate
+
+  alias Comment.Repo
   alias Ecto.Adapters.SQL.Sandbox
 
   using do
